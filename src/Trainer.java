@@ -112,55 +112,46 @@ public class Trainer {
 
     public class Phrase {
 
-        StringStat subjectStat;
-        StringStat bodyStat;
-        String senderHost="";
-        Boolean isSpam=false;
+        int phraseId=0;
+        int sentenceId=0;
+        StringStat phraseStat;
+        int sentiment=0;
 
-        public Phrase(String senderEmail, Boolean isS){
-            senderHost=senderEmail.split("@")[1];
-            isSpam=isS;
+        public Phrase(String[] line){
+            this(line[0], line[1], line[2],line[3]);
         }
 
-
-        void setSubject(String subject) {
-            subjectStat=new StringStat(subject);
+        public Phrase(String phraseIdS, String	sentenceIdS, String	phraseS,String	sentimentS){
+            phraseId=Integer.parseInt(phraseIdS);
+            sentenceId=Integer.parseInt(sentenceIdS);
+            phraseStat=new StringStat(phraseS);
+            sentiment=Integer.parseInt(sentimentS);
         }
 
-        void setMessage(String message) {
-            bodyStat=new StringStat(message);
-        }
 
         public String toString(){
-            String line="Spam: "+isSpam+"\nSender Host: "+senderHost+"\n";
-            line+="Subject\n"+subjectStat.toString()+"\n";
-            line+="Phrase\n"+bodyStat.toString()+"\n";
+            String line="PhraseId: "+phraseId+"\nSentenceId: "+sentenceId+"\n";
+            line+="Phrase\n"+phraseStat.toString()+"\nSentiment: "+sentiment+"\n";
             return line;
         }
-        public String getHost(){
-            return senderHost;
-        }
+      
 
         public HashSet<String> getUnigrams(){
-            HashSet<String> temp=new HashSet<String>(subjectStat.getUnigrams());
-            temp.addAll(bodyStat.getUnigrams());
-            return temp;
+            return phraseStat.getUnigrams();
         }
 
         public HashSet<String> getBigrams(){
-            HashSet<String> temp=new HashSet<String>(subjectStat.getBigrams());
-            temp.addAll(bodyStat.getBigrams());
-            return temp;
+            return phraseStat.getBigrams();
         }
 
         public String toARFFstring(HashSet<String> unigrams,HashSet<String> bigrams){
-            String line=subjectStat.toARFFstring(unigrams,bigrams)+","+bodyStat.toARFFstring(unigrams,bigrams)+","+senderHost+",";
-            if(isSpam){
+            String line=phraseStat.toARFFstring(unigrams,bigrams)+",";//+senderHost+",";
+      /*      if(isSpam){
                 line+="Spam";
             }
             else{
                 line+="Ham";
-            }
+            }*/
             line+="\n";
             return(line);
         }
