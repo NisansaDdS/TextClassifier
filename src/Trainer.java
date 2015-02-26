@@ -16,8 +16,8 @@ public class Trainer {
     public static void main(String[] args) {
         Trainer c = new Trainer();
         String path = "./";
-        c.readFile(path + "train.tsv", false);
-       // c.readFile(path + "Spam.txt", true);
+        c.readDataFile(path + "train.tsv", false);
+       // c.readDataFile(path + "Spam.txt", true);
        // c.writeFile(path);
     }
 
@@ -68,7 +68,7 @@ public class Trainer {
 
     }
 
-    public void readFile(String path, Boolean isSpam) {
+    public void readDataFile(String path, Boolean isSpam) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
             String line = br.readLine();
@@ -134,7 +134,7 @@ public class Trainer {
             line+="Phrase\n"+phraseStat.toString()+"\nSentiment: "+sentiment+"\n";
             return line;
         }
-      
+
 
         public HashSet<String> getUnigrams(){
             return phraseStat.getUnigrams();
