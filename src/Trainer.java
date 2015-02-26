@@ -69,14 +69,19 @@ public class Trainer {
     }
 
     public void readDataFile(String path, Boolean isSpam) {
+        String line=null;
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
-            String line = br.readLine();
+            line = br.readLine();
+            line = br.readLine(); //Ignoring the first line
             int messagePartIndex = 0;
             StringBuilder sb = new StringBuilder();
             Phrase m = null;
             while (line != null) {
-                System.out.println(line);
+               // System.out.println(line);
+                String[] parts=line.split("\t");
+                Phrase p=new Phrase(parts);
+                System.out.println(p.toString());
              /*   if (messagePartIndex == 0) { // Sender email
                     m = new Phrase(line, isSpam);
                     hosts.add(m.getHost());
@@ -122,16 +127,20 @@ public class Trainer {
         }
 
         public Phrase(String phraseIdS, String	sentenceIdS, String	phraseS,String	sentimentS){
+
             phraseId=Integer.parseInt(phraseIdS);
             sentenceId=Integer.parseInt(sentenceIdS);
+
             phraseStat=new StringStat(phraseS);
             sentiment=Integer.parseInt(sentimentS);
+
+
         }
 
 
         public String toString(){
             String line="PhraseId: "+phraseId+"\nSentenceId: "+sentenceId+"\n";
-            line+="Phrase\n"+phraseStat.toString()+"\nSentiment: "+sentiment+"\n";
+            line+="Phrase::\n"+phraseStat.toString()+"\nSentiment: "+sentiment+"\n";
             return line;
         }
 
@@ -145,7 +154,7 @@ public class Trainer {
         }
 
         public String toARFFstring(HashSet<String> unigrams,HashSet<String> bigrams){
-            String line=phraseStat.toARFFstring(unigrams,bigrams)+",";//+senderHost+",";
+            String line=phraseStat.toARFFstring(unigrams,bigrams)+","+sentiment;//+",";
       /*      if(isSpam){
                 line+="Spam";
             }
@@ -182,8 +191,12 @@ public class Trainer {
             s=s.replaceAll("="," ");
             s=s.replaceAll("'"," ");
             s=s.replaceAll("%"," %");
-            s=s.replaceAll("U$","US$");
+
+           // s=s.replaceAll("U$","US$");
+            //System.out.println(s);
             s=s.replaceAll("( )+"," ");
+
+
             String[] parts=s.split(" ");
             totalLength=parts.length;
             for(int i=0;i<parts.length;i++){
