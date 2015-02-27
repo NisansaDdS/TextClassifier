@@ -1,8 +1,11 @@
 import java.io.BufferedWriter;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
+
+import net.didion.jwnl.*;
+import net.didion.jwnl.data.*;
+import net.didion.jwnl.dictionary.*;
+import net.didion.jwnl.dictionary.Dictionary;
 
 /**
  * Created by Nisansa on 15/02/26.
@@ -12,61 +15,126 @@ public class Trainer {
     HashSet<String> bigrams = new HashSet<String>();
     HashSet<String> hosts = new HashSet<String>();
     ArrayList<Phrase> phrases = new ArrayList<Phrase>();
+    ArrayList<Phrase> sentenses = new ArrayList<Phrase>();
 
     public static void main(String[] args) {
-        Trainer c = new Trainer();
-        String path = "./";
-        c.readDataFile(path + "train.tsv", false);
-       // c.readDataFile(path + "Spam.txt", true);
-       // c.writeFile(path);
+
+
+                 Trainer c = new Trainer();
+                //  String path = "./";
+                //   c.readDataFile(path + "train.tsv", false);
+                //   c.writeFile(path);
+    }
+
+
+    public Trainer() {
+        Stemmer s=new Stemmer();
+        System.out.println(s.Stem("Dracula's"));
+
     }
 
     public void writeFile(String path) {
-        String line = "@relation spam\n";
+        StringBuilder s=new StringBuilder();
+
+        //Sampling the training data
+        ArrayList<Phrase> sentensesSample = new ArrayList<Phrase>();
+        unigrams = new HashSet<String>();
+        bigrams = new HashSet<String>();
+        Random r=new Random();
+        for (int i = 0; i < (4*sentenses.size())/10; i++) {
+            sentensesSample.add(sentenses.get(r.nextInt(sentenses.size()-1)));
+        }
+        for (int i = 0; i < sentensesSample.size(); i++) {
+            unigrams.addAll(sentensesSample.get(i).getUnigrams());
+            bigrams.addAll(sentensesSample.get(i).getBigrams());
+        }
+
+
+
+        s.append("@relation sentiment\n");
         Iterator<String> itr = unigrams.iterator();
+        System.out.println(unigrams.size());
         while (itr.hasNext()) {
-            line += "@attribute 'S_" + itr.next() + "' { t}\n";
+            s.append("@attribute 'S_");
+            s.append(itr.next());
+            s.append("' { t}\n");
         }
+ /*       System.out.println(bigrams.size());
         itr = bigrams.iterator();
         while (itr.hasNext()) {
-            line += "@attribute 'S_" + itr.next() + "' { t}\n";
-        }
-        itr = unigrams.iterator();
-        while (itr.hasNext()) {
-            line += "@attribute 'B_" + itr.next() + "' { t}\n";
-        }
-        itr = bigrams.iterator();
-        while (itr.hasNext()) {
-            line += "@attribute 'B_" + itr.next() + "' { t}\n";
-        }
-        line += "@attribute 'Host' {";
+            s.append("@attribute 'S_");
+            s.append(itr.next());
+            s.append("' { t}\n");
+        }*/
+
+     /*   line += "@attribute 'Host' {";
         itr = hosts.iterator();
         while (itr.hasNext()) {
             line += "'" + itr.next() + "',";
         }
         line = line.substring(0, line.length() - 1); // Drop the last commma
-        line += "}\n";
-        line += "@attribute 'Class' {'Spam','Ham'}\n@data\n";
-        for (int i = 0; i < phrases.size(); i++) {
-            Phrase m = phrases.get(i);
-            line += m.toARFFstring(unigrams, bigrams);
-        }
+        line += "}\n"; */
+        s.append("@attribute 'Class' {'0','1','2','3','4'}\n@data\n");
 
+        String line=s.toString();
+        String fileName="train.arff";
 
         try {
-            File statText = new File(path+"/SpamHam.arff");
+            File statText = new File(path+"/"+fileName);
             FileOutputStream is = new FileOutputStream(statText);
             OutputStreamWriter osw = new OutputStreamWriter(is);
             BufferedWriter w = new BufferedWriter(osw);
             w.write(line);
             w.close();
         } catch (IOException e) {
-            System.err.println("Problem writing to the file SpamHam.arff");
+            System.err.println("Problem writing headders to the file "+fileName);
+        }
+
+        line="";
+        s=new StringBuilder();
+        System.gc();
+
+        System.out.println(sentenses.size());
+        System.out.println(sentensesSample.size());
+        for (int i = 0; i < sentensesSample.size(); i++) {
+            Phrase m = sentensesSample.get(i);
+            s.append(m.toARFFstring(unigrams, bigrams));
+
+            if(i%100==0){
+                line=s.toString();
+
+
+
+                try {
+                    File statText = new File(path+"/"+fileName);
+                    FileWriter fw=new FileWriter(statText,true);
+                   // FileOutputStream is = new FileOutputStream(statText);
+                   // OutputStreamWriter osw = new OutputStreamWriter(is);
+                    BufferedWriter w = new BufferedWriter(fw);
+                    w.write(line);
+                    w.close();
+                } catch (IOException e) {
+                    System.err.println("Problem writing lines to the file "+fileName);
+                }
+
+
+
+
+                line="";
+                s=new StringBuilder();
+                System.gc();
+            }
+
         }
 
 
 
+
+
+
     }
+
+
 
     public void readDataFile(String path, Boolean isSpam) {
         String line=null;
@@ -78,10 +146,13 @@ public class Trainer {
             StringBuilder sb = new StringBuilder();
             Phrase m = null;
             while (line != null) {
-               // System.out.println(line);
+              //  System.out.println(line);
                 String[] parts=line.split("\t");
-                Phrase p=new Phrase(parts);
-                System.out.println(p.toString());
+                m=new Phrase(parts);
+
+                //unigrams.addAll(m.getUnigrams());
+                //bigrams.addAll(m.getBigrams());
+                phrases.add(m);
              /*   if (messagePartIndex == 0) { // Sender email
                     m = new Phrase(line, isSpam);
                     hosts.add(m.getHost());
@@ -107,11 +178,27 @@ public class Trainer {
                 }*/
                 line = br.readLine();
             }
-
             br.close();
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+
+        //Grab the longest of sentences
+        int pOldIndex=0;
+        for (int i = 1; i <phrases.size() ; i++) {
+            Phrase pNew=phrases.get(i);
+            Phrase pOld=phrases.get(pOldIndex);
+            if(pOld.sentenceId!=pNew.sentenceId){
+                sentenses.add(pOld);
+                pOldIndex=i;
+            }
+            else{
+                if(pOld.getUnigrams().size()<pNew.getUnigrams().size()){
+                    pOldIndex=i;
+                }
+            }
+        }
+
     }
 
 
@@ -154,15 +241,19 @@ public class Trainer {
         }
 
         public String toARFFstring(HashSet<String> unigrams,HashSet<String> bigrams){
-            String line=phraseStat.toARFFstring(unigrams,bigrams)+","+sentiment;//+",";
+            StringBuilder s=new StringBuilder();
+            s.append(phraseStat.toARFFstring(unigrams,bigrams));
+            s.append(",");
+            s.append(sentiment);
+            s.append("\n");
       /*      if(isSpam){
                 line+="Spam";
             }
             else{
                 line+="Ham";
             }*/
-            line+="\n";
-            return(line);
+
+            return(s.toString());
         }
     }
 
@@ -198,6 +289,11 @@ public class Trainer {
 
 
             String[] parts=s.split(" ");
+
+
+
+
+
             totalLength=parts.length;
             for(int i=0;i<parts.length;i++){
                 unigrams.add(parts[i]);
@@ -209,25 +305,27 @@ public class Trainer {
         }
 
         public String toARFFstring(HashSet<String> allUnigrams,HashSet<String> allBigrams){
-            String line="";
+            StringBuilder s=new StringBuilder();
+
             Iterator<String> itr=allUnigrams.iterator();
             while(itr.hasNext()){
                 if(unigrams.contains(itr.next())){
-                    line+="t,";
+                    s.append("t,");
                 }
                 else{
-                    line+="?,";
+                    s.append("?,");
                 }
             }
-            itr=allBigrams.iterator();
+   /*         itr=allBigrams.iterator();
             while(itr.hasNext()){
                 if(bigrams.contains(itr.next())){
-                    line+="t,";
+                    s.append("t,");
                 }
                 else{
-                    line+="?,";
+                    s.append("?,");
                 }
-            }
+            }*/
+            String line=s.toString();
             line=line.substring(0, line.length()-1); //Drop the last commma
             return line;
         }
@@ -257,6 +355,125 @@ public class Trainer {
                 line+=itr.next()+"\n";
             }
             return(line);
+        }
+
+    }
+
+
+    public class Stemmer{
+        private int MaxWordLength = 50;
+        private Dictionary dic;
+        private MorphologicalProcessor morph;
+        private boolean IsInitialized = false;
+        public HashMap<String,String> AllWords = null;
+
+        /**
+         * establishes connection to the WordNet database
+         */
+        public Stemmer ()
+        {
+            AllWords = new HashMap<String,String>();
+
+            try
+            {
+               // JWNL.initialize(new FileInputStream("file_properties.xml"));
+                JWNLConnecter.initializeJWNL();
+                dic = Dictionary.getInstance();
+                morph = dic.getMorphologicalProcessor();
+                // ((AbstractCachingDictionary)dic).
+                //	setCacheCapacity (10000);
+                IsInitialized = true;
+            }
+            catch (Exception e){
+                System.err.println(e.getMessage());
+            }
+            /*catch ( FileNotFoundException e )
+            {
+                System.out.println ( "Error initializing Stemmer: JWNLproperties.xml not found" );
+            }
+            catch ( JWNLException e )
+            {
+                System.out.println ( "Error initializing Stemmer: "
+                        + e.toString() );
+            }*/
+
+        }
+
+        public void Unload ()
+        {
+            dic.close();
+            Dictionary.uninstall();
+            JWNL.shutdown();
+        }
+
+        /* stems a word with wordnet
+        * @param word word to stem
+        * @return the stemmed word or null if it was not found in WordNet
+        */
+        public String StemWordWithWordNet ( String word )
+        {
+            if ( !IsInitialized )
+                return word;
+            if ( word == null ) return null;
+            if ( morph == null ) morph = dic.getMorphologicalProcessor();
+
+            IndexWord w;
+            try
+            {
+                w = morph.lookupBaseForm( POS.VERB, word );
+                if ( w != null )
+                    return w.getLemma().toString ();
+                w = morph.lookupBaseForm( POS.NOUN, word );
+                if ( w != null )
+                    return w.getLemma().toString();
+                w = morph.lookupBaseForm( POS.ADJECTIVE, word );
+                if ( w != null )
+                    return w.getLemma().toString();
+                w = morph.lookupBaseForm( POS.ADVERB, word );
+                if ( w != null )
+                    return w.getLemma().toString();
+            }
+            catch ( JWNLException e )
+            {
+            }
+            return null;
+        }
+
+        /**
+         * Stem a single word
+         * tries to look up the word in the AllWords HashMap
+         * If the word is not found it is stemmed with WordNet
+         * and put into AllWords
+         *
+         * @param word word to be stemmed
+         * @return stemmed word
+         */
+        public String Stem( String word )
+        {
+            // check if we already know the word
+            String stemmedword = AllWords.get(word);
+            if ( stemmedword != null )
+                return stemmedword; // return it if we already know it
+
+            // don't check words with digits in them
+           // if ( containsNumbers (word) == true )
+        //        stemmedword = null;
+       //    else	// unknown word: try to stem it
+                stemmedword = StemWordWithWordNet (word);
+
+            if ( stemmedword != null )
+            {
+                // word was recognized and stemmed with wordnet:
+                // add it to hashmap and return the stemmed word
+                AllWords.put( word, stemmedword );
+                return stemmedword;
+            }
+            // word could not be stemmed by wordnet,
+            // thus it is no correct english word
+            // just add it to the list of known words so
+            // we won't have to look it up again
+            AllWords.put( word, word );
+            return word;
         }
 
     }
