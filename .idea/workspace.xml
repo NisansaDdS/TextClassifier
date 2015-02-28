@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="458cefea-a096-4f14-b823-0af0f43a960a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/commons_logging_1_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/jwnl.xml" />
-      <change type="MODIFICATION" beforePath="D:\Eclipse WorkSpace\TextClassifier\out\production\TextClassifier\Trainer$Phrase.class" afterPath="D:\Eclipse WorkSpace\TextClassifier\out\production\TextClassifier\Trainer$Phrase.class" />
-      <change type="MODIFICATION" beforePath="D:\Eclipse WorkSpace\TextClassifier\out\production\TextClassifier\Trainer$StringStat.class" afterPath="D:\Eclipse WorkSpace\TextClassifier\out\production\TextClassifier\Trainer$StringStat.class" />
-      <change type="MODIFICATION" beforePath="D:\Eclipse WorkSpace\TextClassifier\out\production\TextClassifier\Trainer.class" afterPath="D:\Eclipse WorkSpace\TextClassifier\out\production\TextClassifier\Trainer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TextClassifier.iml" afterPath="$PROJECT_DIR$/TextClassifier.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Trainer.java" afterPath="$PROJECT_DIR$/src/Trainer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/train.arff" afterPath="$PROJECT_DIR$/train.arff" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="TextClassifier.iws" />
@@ -37,10 +31,14 @@
       <file leaf-file-name="Trainer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Trainer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.740741" vertical-offset="5984" max-vertical-offset="8075">
-              <caret line="35" column="19" selection-start-line="35" selection-start-column="19" selection-end-line="35" selection-end-column="19" />
+            <state vertical-scroll-proportion="0.4074074" vertical-offset="4556" max-vertical-offset="7106">
+              <caret line="437" column="77" selection-start-line="437" selection-start-column="77" selection-end-line="437" selection-end-column="77" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="method#readDataFile#0;class#Trainer#0" expanded="false" />
+                <element signature="class#Phrase#0;class#Trainer#0" expanded="false" />
+                <element signature="method#toARFFstring#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+                <element signature="method#toString#0;class#StringStat#0;class#Trainer#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -67,6 +65,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/JWNLConnecter.java" />
+        <option value="$PROJECT_DIR$/src/Node.java" />
         <option value="$PROJECT_DIR$/src/Trainer.java" />
       </list>
     </option>
@@ -100,8 +99,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -140,6 +137,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -160,6 +159,11 @@
     <property name="options.lastSelected" value="configurable.group.appearance" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Eclipse WorkSpace\TextClassifier\src" />
+    </key>
   </component>
   <component name="RunManager" selected="Application.Trainer">
     <configuration default="false" name="Trainer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -356,19 +360,17 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885906" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885906" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32885906" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32885906" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21208227" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -376,12 +378,14 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885906" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885906" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885906" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -402,7 +406,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="3" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -413,10 +417,38 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/Trainer.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7106">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#readDataFile#0;class#Trainer#0" expanded="false" />
+            <element signature="class#Phrase#0;class#Trainer#0" expanded="false" />
+            <element signature="method#toARFFstring#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+            <element signature="method#toString#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/JWNLConnecter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="123" max-vertical-offset="1207">
+          <caret line="15" column="26" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Trainer.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5525">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#readDataFile#0;class#Trainer#0" expanded="false" />
+            <element signature="class#Phrase#0;class#Trainer#0" expanded="false" />
+            <element signature="method#toARFFstring#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+            <element signature="method#toString#0;class#StringStat#0;class#Trainer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -427,6 +459,10 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#readDataFile#0;class#Trainer#0" expanded="false" />
+            <element signature="class#Phrase#0;class#Trainer#0" expanded="false" />
+            <element signature="method#toARFFstring#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+            <element signature="method#toString#0;class#StringStat#0;class#Trainer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -437,6 +473,10 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#readDataFile#0;class#Trainer#0" expanded="false" />
+            <element signature="class#Phrase#0;class#Trainer#0" expanded="false" />
+            <element signature="method#toARFFstring#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+            <element signature="method#toString#0;class#StringStat#0;class#Trainer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -447,6 +487,10 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#readDataFile#0;class#Trainer#0" expanded="false" />
+            <element signature="class#Phrase#0;class#Trainer#0" expanded="false" />
+            <element signature="method#toARFFstring#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+            <element signature="method#toString#0;class#StringStat#0;class#Trainer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -470,10 +514,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Trainer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.740741" vertical-offset="5984" max-vertical-offset="8075">
-          <caret line="35" column="19" selection-start-line="35" selection-start-column="19" selection-end-line="35" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.4074074" vertical-offset="4556" max-vertical-offset="7106">
+          <caret line="437" column="77" selection-start-line="437" selection-start-column="77" selection-end-line="437" selection-end-column="77" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#readDataFile#0;class#Trainer#0" expanded="false" />
+            <element signature="class#Phrase#0;class#Trainer#0" expanded="false" />
+            <element signature="method#toARFFstring#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+            <element signature="method#toString#0;class#StringStat#0;class#Trainer#0" expanded="false" />
           </folding>
         </state>
       </provider>
