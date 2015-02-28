@@ -4,6 +4,9 @@ import java.util.*;
 
 import net.didion.jwnl.*;
 import net.didion.jwnl.data.*;
+import net.didion.jwnl.data.list.PointerTargetTree;
+import net.didion.jwnl.data.list.PointerTargetTreeNode;
+import net.didion.jwnl.data.list.PointerTargetTreeNodeList;
 import net.didion.jwnl.dictionary.*;
 import net.didion.jwnl.dictionary.Dictionary;
 
@@ -16,20 +19,22 @@ public class Trainer {
     HashSet<String> hosts = new HashSet<String>();
     ArrayList<Phrase> phrases = new ArrayList<Phrase>();
     ArrayList<Phrase> sentenses = new ArrayList<Phrase>();
+    Stemmer stemmer=null;
 
     public static void main(String[] args) {
 
 
                  Trainer c = new Trainer();
-                //  String path = "./";
-                //   c.readDataFile(path + "train.tsv", false);
-                //   c.writeFile(path);
+                String path = "./";
+                  c.readDataFile(path + "train.tsv", false);
+                   c.writeFile(path);
     }
 
 
     public Trainer() {
-        Stemmer s=new Stemmer();
-        System.out.println(s.Stem("Dracula's"));
+        stemmer = new Stemmer();
+        System.out.println(stemmer.Stem("cars"));
+        System.out.println(stemmer.getBaseWord("Car"));
 
     }
 
@@ -41,9 +46,10 @@ public class Trainer {
         unigrams = new HashSet<String>();
         bigrams = new HashSet<String>();
         Random r=new Random();
-        for (int i = 0; i < (4*sentenses.size())/10; i++) {
+      /*  for (int i = 0; i < (4*sentenses.size())/10; i++) {
             sentensesSample.add(sentenses.get(r.nextInt(sentenses.size()-1)));
-        }
+        }*/
+        sentensesSample.addAll(sentenses);
         for (int i = 0; i < sentensesSample.size(); i++) {
             unigrams.addAll(sentensesSample.get(i).getUnigrams());
             bigrams.addAll(sentensesSample.get(i).getBigrams());
@@ -290,8 +296,20 @@ public class Trainer {
 
             String[] parts=s.split(" ");
 
-
-
+            ArrayList<String> stemmedParts=new ArrayList<String>();
+            for (int i = 0; i <parts.length ; i++) {
+               // System.out.println(parts[i]);
+                String wordRes=stemmer.Stem(parts[i]);
+                if(wordRes!=null){
+                    stemmedParts.add(wordRes);
+                }
+                //stemmedParts[i]=stemmer.Stem(parts[i]);
+               // System.out.println(stemmedParts[i]+" -> "+stemmer.getBaseWord(stemmedParts[i]));
+            }
+            parts=new String[stemmedParts.size()];
+            for (int i = 0; i < stemmedParts.size(); i++) {
+                parts[i]=stemmedParts.get(i);
+            }
 
 
             totalLength=parts.length;
@@ -366,6 +384,8 @@ public class Trainer {
         private MorphologicalProcessor morph;
         private boolean IsInitialized = false;
         public HashMap<String,String> AllWords = null;
+        Dictionary dictionary =null;
+        PointerUtils p =null;
 
         /**
          * establishes connection to the WordNet database
@@ -373,6 +393,8 @@ public class Trainer {
         public Stemmer ()
         {
             AllWords = new HashMap<String,String>();
+            dictionary = Dictionary.getInstance();
+            p = PointerUtils.getInstance();
 
             try
             {
@@ -405,6 +427,73 @@ public class Trainer {
             Dictionary.uninstall();
             JWNL.shutdown();
         }
+
+
+        public String getBaseWord(String sWord){
+            int depth=0;
+            dictionary = Dictionary.getInstance();
+            p = PointerUtils.getInstance();
+
+            try {
+                IndexWord word = dictionary.lookupIndexWord(POS.VERB, sWord);
+                if(word==null){
+                    word = dictionary.lookupIndexWord(POS.NOUN, sWord);
+                    depth=8;
+                }
+                if(word==null){
+                    word = dictionary.lookupIndexWord(POS.ADJECTIVE, sWord);
+                    if(word!=null){
+                        return sWord;
+                    }
+                }
+                if(word==null){
+                    word = dictionary.lookupIndexWord(POS.ADVERB, sWord);
+                    if(word!=null){
+                        return sWord;
+                    }
+                }
+                if(word==null){
+                    return null; //If not in wordnet ignore word
+                }
+
+               // System.out.println (sWord+" s "+word);
+                Synset[] s = word.getSenses(); //give word here
+                if(s.length==0){
+                    return sWord;
+                }
+
+
+               // for (int i = 0; i < s.length; i++) {
+                    PointerTargetTree pt = p.getHypernymTree(s[0],depth);  //down
+                    if(pt==null){
+                        System.out.println ("null");
+                    }
+                    PointerTargetTreeNode rootNode = pt.getRootNode();
+                    PointerTargetTreeNodeList l= null;
+                    PointerTargetTreeNode nextNode=null;
+                    for (int j = 0; j < depth; j++) {
+                        l= rootNode.getChildTreeList();
+                        if(l!=null) {
+                            nextNode = (PointerTargetTreeNode) l.get(0);
+                        }
+                        if (nextNode != null) {
+                            rootNode = nextNode;
+                        }
+                    }
+
+
+
+                    return(rootNode.getSynset().getWord(0).getLemma());
+               // }
+            } catch (JWNLException ex) {
+                //System.out.println ( "Error " );
+                //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return null; //If not in wordnet ignore word
+        }
+
+
+
 
         /* stems a word with wordnet
         * @param word word to stem

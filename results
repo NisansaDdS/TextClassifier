@@ -35,3 +35,52 @@ Nope!
 3411
 hyperpypies 48.95
 
+40% with Stem
+7532
+8528
+3411
+hyperpypies 47.22%
+
+40% with Stem and wordnet (depth 5)
+7510
+8528
+3411
+hyperpypies 47.22%
+
+40% with Stem and wordnet (depth 8)
+7580
+8528
+3411
+hyperpypies 47.8977%
+VFI 48.69%
+Random Forrest: 26.7%
+NNGE: crash
+Alternating decision tree: not av
+ IB1 instance-based classifier: crash
+ Logistic model tree : crash
+ Radial basis function network: crash
+ meta.END: crash
+ bayesnet: 
+ 
+
+
+40% with Stem and wordnet (depth 8) Omly words in WodNet
+7445
+8528
+3411
+hyperpypies: 47.486
+VFI: 48.04
+
+40% with Stem and wordnet (depth 5) Omly words in WodNet
+7498
+8528
+3411
+hyperpypies: 49.162%
+VFI: 48.63%
+
+40% with Stem and wordnet (depth 5) Omly words in WodNet
+7483
+8528
+3411
+hyperpypies: 46.95%
+VFI: 48.13%
