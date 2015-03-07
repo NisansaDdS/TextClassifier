@@ -99,14 +99,22 @@ public class FrequncyCounter {
     }
 
     public double evaluate(){
+        missingMissed=0;
+        missingHit=0;
+        MisVarience=0;
         int count=0;
         for (int i = 0; i < test.size(); i++) {
             if(evaluate(test.get(i))){
                 count++;
             }
         }
+        System.out.println("Miss: "+missingMissed+" Hit: "+missingHit+" Miss Per%: "+(missingMissed*100)/(missingMissed+missingHit)+" Miss Var: "+MisVarience/missingMissed);
        return(((double)(count*100))/sentences.size());
     }
+
+    int missingMissed=0;
+    int missingHit=0;
+    int MisVarience=0;
 
     public boolean evaluate(Sentence s){
         double[] values=new double[5];
@@ -119,17 +127,18 @@ public class FrequncyCounter {
         }
 
 
-
+        boolean wordMissing=false;
 
         for (int i = 0; i <ngrams.size(); i++) {
             WordStat ws=wordStats.get(ngrams.get(i));
             if(ws!=null) {
                 double[] partValues=ws.classStats;
                 for (int j = 0; j < values.length; j++) {
-                    values[j]+=ws.modifier*partValues[j];
+                    values[j]+=(ws.IDFmodifier +ws.infoModifier)*partValues[j];
                 }
             }
             else{
+                wordMissing=true;
                 //Wordnet
             }
         }
@@ -143,6 +152,15 @@ public class FrequncyCounter {
             }
         }
 
+        if(wordMissing){
+            if(s.classVal==index) {
+                missingHit++;
+            }
+            else{
+                missingMissed++;
+                MisVarience+=Math.abs(s.classVal-index);
+            }
+        }
         return (s.classVal==index);
         //System.out.println(s.classVal+" -> "+index);
     }
@@ -159,33 +177,61 @@ public class FrequncyCounter {
     public void normalize() {
         Iterator<WordStat> itr = wordStats.values().iterator();
         double[] modifiers = new double[wordStats.values().size()];
+        double[] entModifiers = new double[wordStats.values().size()];
         int i = 0;
         while (itr.hasNext()) {
             WordStat ws = itr.next();
             ws.setClassStats(normalize(ws.getClassStats()));
             modifiers[i] = logb(sentences.size() / (1 + ws.sentenceCount), 10);
+            entModifiers[i]=calculateEntropy(ws.getClassStats());//(ws.getNonZeroCount()* calculateEntropy(ws.getClassStats()))/ws.getClassStats().length;//calculateEntropy(ws.getClassStats());
             i++;
         }
+      //  modifiers=standadize(modifiers);
         modifiers = normalize(modifiers);
+      //  entModifiers=standadize(entModifiers);
+        entModifiers=normalize(entModifiers);
         itr = wordStats.values().iterator();
         i = 0;
         while (itr.hasNext()) {
             WordStat ws = itr.next();
-            ws.modifier=modifiers[i];
+            ws.IDFmodifier =modifiers[i];
+            ws.infoModifier=entModifiers[i];//1;//calculateEntropy(ws.getClassStats());//1;//((ws.getNonZeroCount()* calculateEntropy(ws.getClassStats()))/ws.getClassStats().length);
             i++;
+           // System.out.println(ws.toString());
         }
+    }
+
+    public double[] standadize(double[] stats){
+        double mean=0;
+        for (int i = 0; i < stats.length; i++) {
+            mean+=stats[i];
+        }
+        mean=mean/stats.length;
+        double stanDev=0;
+        for (int i = 0; i <stats.length ; i++) {
+            stanDev+=Math.pow(stats[i]-mean,2);
+        }
+        stanDev=stanDev/stats.length;
+        stanDev=Math.sqrt(stanDev);
+        double[] newStats=new double[stats.length];
+        for (int i = 0; i < stats.length; i++) {
+            newStats[i]=(stats[i]-mean)/stanDev;
+        }
+        return newStats;
     }
 
     public double[] normalize(double[] stats){
         double curmMin=Double.MAX_VALUE;
-        double curMax=Double.MIN_VALUE;
+        double curMax=-Double.MAX_VALUE;
         double[] newStats=new double[stats.length];
         for (int i = 0; i < stats.length; i++) {
             curmMin=Math.min(curmMin,stats[i]);
             curMax=Math.max(curMax, stats[i]);
         }
-        double tarMin=Math.min(Double.MIN_VALUE,curmMin); //If zero keep at zero otherwise set to min val
+        //System.out.println(curmMin+" "+curMax);
+        double tarMin=Math.min(Double.MIN_VALUE,Math.max(curmMin,0)); //If zero keep at zero, if negative set to zero, otherwise set to min val
         double tarMax=1;
+        //System.out.println(tarMin+" "+tarMax);
         double m=(tarMax-tarMin)/(curMax-curmMin);
         double c=((curmMin*tarMax)-(curMax*tarMin))/(curmMin-curMax);
         for (int i = 0; i <stats.length; i++) {
@@ -195,15 +241,16 @@ public class FrequncyCounter {
     }
 
 
-    public double calculateEntropy(int[] nums){
-        int sum=0;
+
+    public double calculateEntropy(double[] nums){
+        double sum=0;
         for (int i = 0; i < nums.length; i++) {
             sum+=nums[i];
         }
         return (calculateEntropy( nums, sum));
     }
 
-    public double calculateEntropy(int[] nums, int sum){
+    public double calculateEntropy(double[] nums, double sum){
         double val=0;
         for (int i = 0; i < nums.length; i++) {
             val+=calculateInfo(nums[i], sum);
@@ -212,7 +259,11 @@ public class FrequncyCounter {
     }
 
     private double calculateInfo(int a, int b){
-        double ratio=((double)a)/((double)b);
+        return(calculateInfo((double) a,(double) b));
+    }
+
+    private double calculateInfo(double a, double b){
+        double ratio=a/b;
         if (ratio>0) {
             return (-ratio * log2(ratio));
         }
@@ -343,7 +394,7 @@ public class FrequncyCounter {
             }
         }
 
-        //Count words (bi-grams)
+ /*       //Count words (bi-grams)
         for (int i = 0; i < parts.length-1; i++) {
             String bigram=parts[i]+" "+parts[i+1];
             Integer count=wordcounts.get(bigram);
@@ -354,7 +405,7 @@ public class FrequncyCounter {
                 count++;
                 wordcounts.put(bigram,count);
             }
-        }
+        }*/
 
         //Calculate the frequency for each word
         HashMap<String,Double> wordfequncies=new HashMap<String,Double>();
@@ -389,8 +440,10 @@ public class FrequncyCounter {
     public class WordStat{
         String word;
         private double[] classStats =new double[5];
-        double modifier=1;
+        double IDFmodifier =1;
+        double infoModifier=1;
         int sentenceCount=0;
+        int nonZeroCount =-1;
 
         public WordStat(String word) {
             this.word = word;
@@ -405,7 +458,7 @@ public class FrequncyCounter {
             StringBuilder sb=new StringBuilder();
             sb.append(word);
             sb.append(" : ");
-            sb.append(modifier);
+            sb.append(IDFmodifier);
             sb.append(" : ");
             for (int i = 0; i < getClassStats().length; i++) {
                 sb.append(getClassStats()[i]);
@@ -415,6 +468,17 @@ public class FrequncyCounter {
             return  sb.toString();
         }
 
+        public int getNonZeroCount(){
+            if(nonZeroCount ==-1){
+                nonZeroCount =0;
+                for (int i = 0; i < classStats.length; i++) {
+                    if(classStats[i]!=0){
+                        nonZeroCount++;
+                    }
+                }
+            }
+            return nonZeroCount;
+        }
 
         public double[] getClassStats() {
             return classStats;

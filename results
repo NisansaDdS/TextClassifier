@@ -140,8 +140,21 @@ Lazy IBK 40.1482%
 
 NEW
 uni: 10 fold : no wordnet
-38.04
+38.043701140586954
 
 uni & bi 10 fold : no wordnet
-37.77
+37.07
 
+uni: 10 fold : no wordnet : With info (multi)
+37.95
+
+uni: 10 fold : no wordnet : With info (sum with part val)
+38.0433807509932
+
+uni: 10 fold : no wordnet : With info (sum with idf)
+38.79533512751506
+
+uni: 10 fold : no wordnet : With direct-info (sum with idf)
+38.80392156862745
+
+57% Misses result in misclassification with average 1 class difference
