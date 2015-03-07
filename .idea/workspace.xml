@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="458cefea-a096-4f14-b823-0af0f43a960a" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/FrequncyCounter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/TextClassifier/Trainer$Phrase.class" afterPath="$PROJECT_DIR$/out/production/TextClassifier/Trainer$Phrase.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/TextClassifier/Trainer$Stemmer.class" afterPath="$PROJECT_DIR$/out/production/TextClassifier/Trainer$Stemmer.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/TextClassifier/Trainer$StringStat.class" afterPath="$PROJECT_DIR$/out/production/TextClassifier/Trainer$StringStat.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/TextClassifier/Trainer.class" afterPath="$PROJECT_DIR$/out/production/TextClassifier/Trainer.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/train.arff" afterPath="$PROJECT_DIR$/train.arff" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Trainer.java" afterPath="$PROJECT_DIR$/src/Trainer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results" afterPath="$PROJECT_DIR$/results" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="TextClassifier.iws" />
@@ -28,17 +35,54 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Trainer.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Trainer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Trainer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4074074" vertical-offset="4556" max-vertical-offset="7106">
-              <caret line="437" column="77" selection-start-line="437" selection-start-column="77" selection-end-line="437" selection-end-column="77" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="5584" max-vertical-offset="7565">
+              <caret line="414" column="40" selection-start-line="392" selection-start-column="12" selection-end-line="414" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#8090#8091#0" expanded="true" />
+                <element signature="e#8122#8123#0" expanded="true" />
+                <element signature="e#8174#8175#0" expanded="true" />
+                <element signature="e#8222#8223#0" expanded="true" />
                 <element signature="method#readDataFile#0;class#Trainer#0" expanded="false" />
-                <element signature="class#Phrase#0;class#Trainer#0" expanded="false" />
-                <element signature="method#toARFFstring#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+                <element signature="e#10878#10879#0" expanded="true" />
+                <element signature="e#10941#10942#0" expanded="true" />
                 <element signature="method#toString#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+                <element signature="class#Stemmer#0;class#Trainer#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FrequncyCounter.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/FrequncyCounter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.16976744" vertical-offset="1882" max-vertical-offset="9826">
+              <caret line="115" column="22" selection-start-line="115" selection-start-column="22" selection-end-line="115" selection-end-column="22" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#780#797#0" expanded="true" />
+                <element signature="e#849#859#0" expanded="true" />
+                <element signature="e#907#917#0" expanded="true" />
+                <element signature="e#964#974#0" expanded="true" />
+                <element signature="e#1999#2009#0" expanded="true" />
+                <element signature="e#2742#2752#0" expanded="true" />
+                <element signature="e#3500#3508#0" expanded="true" />
+                <element signature="e#6763#6764#0" expanded="true" />
+                <element signature="e#6795#6796#0" expanded="true" />
+                <element signature="e#6847#6848#0" expanded="true" />
+                <element signature="e#6895#6896#0" expanded="true" />
+                <element signature="method#readDataFile#0;class#FrequncyCounter#0" expanded="false" />
+                <element signature="e#10884#10900#0" expanded="true" />
+                <element signature="e#11696#11711#0" expanded="true" />
+                <element signature="e#12759#12760#0" expanded="true" />
+                <element signature="e#12799#12800#0" expanded="true" />
+                <element signature="e#13430#13431#0" expanded="true" />
+                <element signature="e#13471#13472#0" expanded="true" />
+                <element signature="e#13529#13530#0" expanded="true" />
+                <element signature="e#13581#13582#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -50,7 +94,7 @@
             <state vertical-scroll-proportion="0.0" vertical-offset="123" max-vertical-offset="1207">
               <caret line="15" column="26" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="26" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#0#2049#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -67,6 +111,8 @@
         <option value="$PROJECT_DIR$/src/JWNLConnecter.java" />
         <option value="$PROJECT_DIR$/src/Node.java" />
         <option value="$PROJECT_DIR$/src/Trainer.java" />
+        <option value="$PROJECT_DIR$/src/algo.java" />
+        <option value="$PROJECT_DIR$/src/FrequncyCounter.java" />
       </list>
     </option>
   </component>
@@ -165,7 +211,7 @@
       <recent name="D:\Eclipse WorkSpace\TextClassifier\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Trainer">
+  <component name="RunManager" selected="Application.FrequncyCounter">
     <configuration default="false" name="Trainer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="Trainer" />
@@ -174,6 +220,29 @@
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="TextClassifier" />
+      <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="FrequncyCounter" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="FrequncyCounter" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <option name="ENABLE_SWING_INSPECTOR" value="false" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
@@ -336,12 +405,14 @@
       <listeners />
       <method />
     </configuration>
-    <list size="1">
+    <list size="2">
       <item index="0" class="java.lang.String" itemvalue="Application.Trainer" />
+      <item index="1" class="java.lang.String" itemvalue="Application.FrequncyCounter" />
     </list>
     <recent_temporary>
-      <list size="1">
-        <item index="0" class="java.lang.String" itemvalue="Application.Trainer" />
+      <list size="2">
+        <item index="0" class="java.lang.String" itemvalue="Application.FrequncyCounter" />
+        <item index="1" class="java.lang.String" itemvalue="Application.Trainer" />
       </list>
     </recent_temporary>
   </component>
@@ -360,32 +431,32 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885906" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32885906" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32841823" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885906" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21208227" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885906" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885906" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885906" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -406,7 +477,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="3" />
+      <option name="time" value="6" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -421,10 +492,15 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#8090#8091#0" expanded="true" />
+            <element signature="e#8122#8123#0" expanded="true" />
+            <element signature="e#8174#8175#0" expanded="true" />
+            <element signature="e#8222#8223#0" expanded="true" />
             <element signature="method#readDataFile#0;class#Trainer#0" expanded="false" />
-            <element signature="class#Phrase#0;class#Trainer#0" expanded="false" />
-            <element signature="method#toARFFstring#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+            <element signature="e#10878#10879#0" expanded="true" />
+            <element signature="e#10941#10942#0" expanded="true" />
             <element signature="method#toString#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+            <element signature="class#Stemmer#0;class#Trainer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -434,7 +510,36 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="123" max-vertical-offset="1207">
           <caret line="15" column="26" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="26" />
           <folding>
+            <element signature="e#0#2049#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Trainer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7106">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#8090#8091#0" expanded="true" />
+            <element signature="e#8122#8123#0" expanded="true" />
+            <element signature="e#8174#8175#0" expanded="true" />
+            <element signature="e#8222#8223#0" expanded="true" />
+            <element signature="method#readDataFile#0;class#Trainer#0" expanded="false" />
+            <element signature="e#10878#10879#0" expanded="true" />
+            <element signature="e#10941#10942#0" expanded="true" />
+            <element signature="method#toString#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+            <element signature="class#Stemmer#0;class#Trainer#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/JWNLConnecter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="123" max-vertical-offset="1207">
+          <caret line="15" column="26" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#2049#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -445,10 +550,15 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#8090#8091#0" expanded="true" />
+            <element signature="e#8122#8123#0" expanded="true" />
+            <element signature="e#8174#8175#0" expanded="true" />
+            <element signature="e#8222#8223#0" expanded="true" />
             <element signature="method#readDataFile#0;class#Trainer#0" expanded="false" />
-            <element signature="class#Phrase#0;class#Trainer#0" expanded="false" />
-            <element signature="method#toARFFstring#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+            <element signature="e#10878#10879#0" expanded="true" />
+            <element signature="e#10941#10942#0" expanded="true" />
             <element signature="method#toString#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+            <element signature="class#Stemmer#0;class#Trainer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -459,10 +569,15 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#8090#8091#0" expanded="true" />
+            <element signature="e#8122#8123#0" expanded="true" />
+            <element signature="e#8174#8175#0" expanded="true" />
+            <element signature="e#8222#8223#0" expanded="true" />
             <element signature="method#readDataFile#0;class#Trainer#0" expanded="false" />
-            <element signature="class#Phrase#0;class#Trainer#0" expanded="false" />
-            <element signature="method#toARFFstring#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+            <element signature="e#10878#10879#0" expanded="true" />
+            <element signature="e#10941#10942#0" expanded="true" />
             <element signature="method#toString#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+            <element signature="class#Stemmer#0;class#Trainer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -473,10 +588,15 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#8090#8091#0" expanded="true" />
+            <element signature="e#8122#8123#0" expanded="true" />
+            <element signature="e#8174#8175#0" expanded="true" />
+            <element signature="e#8222#8223#0" expanded="true" />
             <element signature="method#readDataFile#0;class#Trainer#0" expanded="false" />
-            <element signature="class#Phrase#0;class#Trainer#0" expanded="false" />
-            <element signature="method#toARFFstring#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+            <element signature="e#10878#10879#0" expanded="true" />
+            <element signature="e#10941#10942#0" expanded="true" />
             <element signature="method#toString#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+            <element signature="class#Stemmer#0;class#Trainer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -487,10 +607,15 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#8090#8091#0" expanded="true" />
+            <element signature="e#8122#8123#0" expanded="true" />
+            <element signature="e#8174#8175#0" expanded="true" />
+            <element signature="e#8222#8223#0" expanded="true" />
             <element signature="method#readDataFile#0;class#Trainer#0" expanded="false" />
-            <element signature="class#Phrase#0;class#Trainer#0" expanded="false" />
-            <element signature="method#toARFFstring#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+            <element signature="e#10878#10879#0" expanded="true" />
+            <element signature="e#10941#10942#0" expanded="true" />
             <element signature="method#toString#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+            <element signature="class#Stemmer#0;class#Trainer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -507,21 +632,72 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="1207">
           <caret line="15" column="26" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="26" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#0#2049#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.7.0_01/src.zip!/java/lang/String.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33262712" vertical-offset="32024" max-vertical-offset="50779">
+          <caret line="1957" column="0" selection-start-line="1957" selection-start-column="0" selection-end-line="1957" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.7.0_01/src.zip!/java/lang/NumberFormatException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6758475" vertical-offset="310" max-vertical-offset="782">
+          <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Trainer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4074074" vertical-offset="4556" max-vertical-offset="7106">
-          <caret line="437" column="77" selection-start-line="437" selection-start-column="77" selection-end-line="437" selection-end-column="77" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="5329" max-vertical-offset="7565">
+          <caret line="414" column="40" selection-start-line="392" selection-start-column="12" selection-end-line="414" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#8090#8091#0" expanded="true" />
+            <element signature="e#8122#8123#0" expanded="true" />
+            <element signature="e#8174#8175#0" expanded="true" />
+            <element signature="e#8222#8223#0" expanded="true" />
             <element signature="method#readDataFile#0;class#Trainer#0" expanded="false" />
-            <element signature="class#Phrase#0;class#Trainer#0" expanded="false" />
-            <element signature="method#toARFFstring#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+            <element signature="e#10878#10879#0" expanded="true" />
+            <element signature="e#10941#10942#0" expanded="true" />
             <element signature="method#toString#0;class#StringStat#0;class#Trainer#0" expanded="false" />
+            <element signature="class#Stemmer#0;class#Trainer#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/FrequncyCounter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16976744" vertical-offset="1882" max-vertical-offset="9826">
+          <caret line="115" column="22" selection-start-line="115" selection-start-column="22" selection-end-line="115" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#780#797#0" expanded="true" />
+            <element signature="e#849#859#0" expanded="true" />
+            <element signature="e#907#917#0" expanded="true" />
+            <element signature="e#964#974#0" expanded="true" />
+            <element signature="e#1999#2009#0" expanded="true" />
+            <element signature="e#2742#2752#0" expanded="true" />
+            <element signature="e#3500#3508#0" expanded="true" />
+            <element signature="e#6763#6764#0" expanded="true" />
+            <element signature="e#6795#6796#0" expanded="true" />
+            <element signature="e#6847#6848#0" expanded="true" />
+            <element signature="e#6895#6896#0" expanded="true" />
+            <element signature="method#readDataFile#0;class#FrequncyCounter#0" expanded="false" />
+            <element signature="e#10884#10900#0" expanded="true" />
+            <element signature="e#11696#11711#0" expanded="true" />
+            <element signature="e#12759#12760#0" expanded="true" />
+            <element signature="e#12799#12800#0" expanded="true" />
+            <element signature="e#13430#13431#0" expanded="true" />
+            <element signature="e#13471#13472#0" expanded="true" />
+            <element signature="e#13529#13530#0" expanded="true" />
+            <element signature="e#13581#13582#0" expanded="true" />
           </folding>
         </state>
       </provider>

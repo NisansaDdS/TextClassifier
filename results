@@ -84,3 +84,64 @@ VFI: 48.63%
 3411
 hyperpypies: 46.95%
 VFI: 48.13%
+
+100% with Stem AND ngrams that appear more than or equal to 5 times NO WORDNET
+3276 <-uni
+8528 <- senten
+hyperpypies: 24.4442
+VFI: 36.3722
+Random Forest: 27.1968
+
+100% with Stem AND ngrams that appear more than or equal to 3 times NO WORDNET
+5161 <-uni
+8528 <- senten
+hyperpypies: 26.79%
+VFI: 34.38%
+
+100% with Stem AND ngrams that appear more than or equal to 3 times With WORDNET level 3
+2720
+8528
+hyperpypies: 22.29%
+VFI: 34.21%
+
+100% with Stem AND ngrams that appear more than or equal to 2 times With NO WORDNET
+7185
+8528
+hyperpypies: Crash 
+VFI: 
+
+100% with Stem AND ngrams that appear more than or equal to 2 times With NO WORDNET No Stopwords
+7185
+8528
+hyperpypies: Crash 
+VFI: 
+
+100% with Stem AND ngrams that appear more than or equal to 3 times With NO WORDNET No Stopwords no numbers 
+5106 
+8528
+hyperpypies: 27%
+VFI: 34.97
+
+
+100% with Stem AND ngrams that appear more than or equal to 3 times With NO WORDNET No Stopwords no numbers information atmost 0.99
+1128
+8528
+hyperpypies: 26.738
+VFI: 27.338
+
+100% with Stem AND ngrams that appear more than or equal to 2 times With NO WORDNET No Stopwords no numbers information atmost 0.99
+1637
+8528
+hyperpypies: 33.149
+VFI: 33.1255
+Rand For,NB,LR,: 27.2
+Lazy IBK 40.1482%
+
+
+NEW
+uni: 10 fold : no wordnet
+38.04
+
+uni & bi 10 fold : no wordnet
+37.77
+

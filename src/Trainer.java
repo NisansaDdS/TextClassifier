@@ -34,7 +34,7 @@ public class Trainer {
     public Trainer() {
         stemmer = new Stemmer();
         System.out.println(stemmer.Stem("cars"));
-        System.out.println(stemmer.getBaseWord("Car"));
+        System.out.println(stemmer.getBaseWord("car",5));
 
     }
 
@@ -46,33 +46,116 @@ public class Trainer {
         unigrams = new HashSet<String>();
         bigrams = new HashSet<String>();
         Random r=new Random();
+        boolean useBigram=false;
       /*  for (int i = 0; i < (4*sentenses.size())/10; i++) {
             sentensesSample.add(sentenses.get(r.nextInt(sentenses.size()-1)));
         }*/
         sentensesSample.addAll(sentenses);
+
+        System.out.println("Counting frequncy");
+        HashMap<String,int[]> unigramCounts=new HashMap<String,int[]>();
+        HashMap<String,int[]> bigramCounts=new HashMap<String,int[]>();
         for (int i = 0; i < sentensesSample.size(); i++) {
+            Phrase sen=sentensesSample.get(i);
+            Iterator<String> itr=sen.getUnigrams().iterator();
+            while(itr.hasNext()){
+                String unigram=itr.next();
+               int[] count=unigramCounts.get(unigram);
+                if(count==null){
+                    count=new int[5];
+                    for (int j = 0; j <count.length ; j++) {
+                        count[j]=0;
+                    }
+                    count[sen.sentiment]=1;
+                    unigramCounts.put(unigram,count);
+                }
+                else{
+                    unigramCounts.remove(unigram);
+                    count[sen.sentiment]++;
+                    unigramCounts.put(unigram,count);
+                }
+            }
+
+            if(useBigram) {
+                itr = sentensesSample.get(i).getBigrams().iterator();
+                while (itr.hasNext()) {
+                    String bigram = itr.next();
+                    int[] count = bigramCounts.get(bigram);
+                    if (count == null) {
+                        count=new int[5];
+                        for (int j = 0; j <count.length ; j++) {
+                            count[j]=0;
+                        }
+                        count[sen.sentiment]=1;
+                        bigramCounts.put(bigram,count);
+                    } else {
+                        bigramCounts.remove(bigram);
+                        count[sen.sentiment]++;
+                        bigramCounts.put(bigram, count);
+                    }
+                }
+            }
+        }
+
+        System.out.println("Applying threshold");
+        int threshold=2;
+        double infoThreshold=0.99;
+        Iterator<String> itr=unigramCounts.keySet().iterator();
+        while(itr.hasNext()) {
+            String unigram = itr.next();
+            int sum=0;
+            int[] counts=unigramCounts.get(unigram);
+            for (int i = 0; i <counts.length; i++) {
+                sum+=counts[i];
+            }
+
+            if(sum>=threshold){
+                if(calculateEntropy(counts, sum)<=infoThreshold) {
+                    unigrams.add(unigram);
+                }
+            }
+        }
+        if(useBigram) {
+            itr = bigramCounts.keySet().iterator();
+            while (itr.hasNext()) {
+                String bigram = itr.next();
+                int sum=0;
+                int[] counts=bigramCounts.get(bigram) ;
+                for (int i = 0; i <counts.length; i++) {
+                    sum+=counts[i];
+                }
+
+                if (sum >= threshold) {
+                    if(calculateEntropy(counts, sum)<=infoThreshold) {
+                        bigrams.add(bigram);
+                    }
+                }
+            }
+        }
+    /*    for (int i = 0; i < sentensesSample.size(); i++) {
             unigrams.addAll(sentensesSample.get(i).getUnigrams());
             bigrams.addAll(sentensesSample.get(i).getBigrams());
-        }
+        }*/
 
 
 
         s.append("@relation sentiment\n");
-        Iterator<String> itr = unigrams.iterator();
+        itr = unigrams.iterator();
         System.out.println(unigrams.size());
         while (itr.hasNext()) {
             s.append("@attribute 'S_");
             s.append(itr.next());
             s.append("' { t}\n");
         }
- /*       System.out.println(bigrams.size());
-        itr = bigrams.iterator();
-        while (itr.hasNext()) {
-            s.append("@attribute 'S_");
-            s.append(itr.next());
-            s.append("' { t}\n");
-        }*/
-
+        if(useBigram) {
+            System.out.println(bigrams.size());
+            itr = bigrams.iterator();
+            while (itr.hasNext()) {
+                s.append("@attribute 'S_");
+                s.append(itr.next());
+                s.append("' { t}\n");
+            }
+        }
      /*   line += "@attribute 'Host' {";
         itr = hosts.iterator();
         while (itr.hasNext()) {
@@ -141,6 +224,41 @@ public class Trainer {
     }
 
 
+    public double calculateEntropy(int[] nums){
+       int sum=0;
+        for (int i = 0; i < nums.length; i++) {
+            sum+=nums[i];
+        }
+        return (calculateEntropy( nums, sum));
+    }
+
+    public double calculateEntropy(int[] nums, int sum){
+        double val=0;
+        for (int i = 0; i < nums.length; i++) {
+            val+=calculateInfo(nums[i], sum);
+        }
+        return (val);
+    }
+
+    private double calculateInfo(int a, int b){
+        double ratio=((double)a)/((double)b);
+        if (ratio>0) {
+            return (-ratio * log2(ratio));
+        }
+        else{
+            return 0;
+        }
+    }
+
+    public double log2( double a )
+    {
+        return logb(a,2);
+    }
+
+    public double logb( double a, double b )
+    {
+        return Math.log(a) / Math.log(b);
+    }
 
     public void readDataFile(String path, Boolean isSpam) {
         String line=null;
@@ -301,7 +419,30 @@ public class Trainer {
                // System.out.println(parts[i]);
                 String wordRes=stemmer.Stem(parts[i]);
                 if(wordRes!=null){
-                    stemmedParts.add(wordRes);
+                    try {
+                        Integer a = Integer.valueOf(wordRes);
+                    }
+                    catch(Exception e){
+                        //Proceed
+                    }
+                    if(wordRes.length()<=1){
+                        continue;
+                    }
+
+
+                    for (int j = 0; j <stopWords.length ; j++) {
+                        if(wordRes.equalsIgnoreCase(stopWords[j])){
+                            continue;
+                        }
+                    }
+
+                 //   String wordRoot=stemmer.getBaseWord(wordRes,5);
+                   // if(wordRoot!=null) {
+                 //       stemmedParts.add(wordRoot);
+                 //   }
+                //    else {
+                        stemmedParts.add(wordRes);
+                //    }
                 }
                 //stemmedParts[i]=stemmer.Stem(parts[i]);
                // System.out.println(stemmedParts[i]+" -> "+stemmer.getBaseWord(stemmedParts[i]));
@@ -334,7 +475,7 @@ public class Trainer {
                     s.append("?,");
                 }
             }
-   /*         itr=allBigrams.iterator();
+            itr=allBigrams.iterator();
             while(itr.hasNext()){
                 if(bigrams.contains(itr.next())){
                     s.append("t,");
@@ -342,7 +483,7 @@ public class Trainer {
                 else{
                     s.append("?,");
                 }
-            }*/
+            }
             String line=s.toString();
             line=line.substring(0, line.length()-1); //Drop the last commma
             return line;
@@ -429,7 +570,7 @@ public class Trainer {
         }
 
 
-        public String getBaseWord(String sWord){
+        public String getBaseWord(String sWord,int nounDepth){
             int depth=0;
             dictionary = Dictionary.getInstance();
             p = PointerUtils.getInstance();
@@ -438,7 +579,7 @@ public class Trainer {
                 IndexWord word = dictionary.lookupIndexWord(POS.VERB, sWord);
                 if(word==null){
                     word = dictionary.lookupIndexWord(POS.NOUN, sWord);
-                    depth=8;
+                    depth=nounDepth;
                 }
                 if(word==null){
                     word = dictionary.lookupIndexWord(POS.ADJECTIVE, sWord);
@@ -488,6 +629,9 @@ public class Trainer {
             } catch (JWNLException ex) {
                 //System.out.println ( "Error " );
                 //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            catch (Exception e){
+
             }
             return null; //If not in wordnet ignore word
         }
