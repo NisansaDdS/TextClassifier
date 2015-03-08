@@ -1,3 +1,8 @@
+import edu.cmu.lti.lexical_db.ILexicalDatabase;
+import edu.cmu.lti.lexical_db.NictWordNet;
+import edu.cmu.lti.ws4j.RelatednessCalculator;
+import edu.cmu.lti.ws4j.impl.WuPalmer;
+
 import net.didion.jwnl.JWNL;
 import net.didion.jwnl.JWNLException;
 import net.didion.jwnl.data.IndexWord;
@@ -27,6 +32,10 @@ public class FrequncyCounter {
     ArrayList<Sentence> train=new  ArrayList<Sentence>();
     ArrayList<Sentence> test=new  ArrayList<Sentence>();
     Stemmer stemmer=null;
+
+    ILexicalDatabase db = new NictWordNet();
+    private RelatednessCalculator rc= new WuPalmer(db);
+    ArrayList<String> availableWords=new  ArrayList<String>();
 
 
     public static void main(String[] args) {
@@ -101,56 +110,96 @@ public class FrequncyCounter {
     public double evaluate(){
         missingMissed=0;
         missingHit=0;
-        MisVarience=0;
+        missingMissVarience =0;
+        foundMissed=0;
+        foundHit=0;
+        foundMissVarience =0;
+
         int count=0;
         for (int i = 0; i < test.size(); i++) {
             if(evaluate(test.get(i))){
                 count++;
             }
         }
-        System.out.println("Miss: "+missingMissed+" Hit: "+missingHit+" Miss Per%: "+(missingMissed*100)/(missingMissed+missingHit)+" Miss Var: "+MisVarience/missingMissed);
-       return(((double)(count*100))/sentences.size());
+        System.out.println("Missing::  Miss: "+missingMissed+" Hit: "+missingHit+" Miss Per%: "+(missingMissed*100)/(missingMissed+missingHit)+" Miss Var: "+ missingMissVarience /missingMissed);
+        System.out.println("Found::  Miss: "+foundMissed+" Hit: "+foundHit+" Miss Per%: "+(foundMissed*100)/(foundMissed+foundHit)+" Miss Var: "+ foundMissVarience /foundMissed);
+
+        return(((double)(count*100))/sentences.size());
     }
 
     int missingMissed=0;
     int missingHit=0;
-    int MisVarience=0;
+    double missingMissVarience =0;
+    int foundMissed=0;
+    int foundHit=0;
+    double foundMissVarience =0;
 
     public boolean evaluate(Sentence s){
         double[] values=new double[5];
         ArrayList<String> ngrams=new ArrayList<String>();
         for (int i = 0; i <s.sentenceParts.length ; i++) {
             ngrams.add(s.sentenceParts[i]);
-            if(i!=0) {
-                ngrams.add(s.sentenceParts[i - 1] + " " + s.sentenceParts[i]);
-            }
+        //    if(i!=0) {
+         //       ngrams.add(s.sentenceParts[i - 1] + " " + s.sentenceParts[i]);
+         //   }
         }
 
 
         boolean wordMissing=false;
 
         for (int i = 0; i <ngrams.size(); i++) {
-            WordStat ws=wordStats.get(ngrams.get(i));
+            String word=ngrams.get(i);
+            WordStat ws=wordStats.get(word);
+            double wordnetModifier=1;
+            if(ws==null) {
+                wordMissing=true;
+                //Wordnet
+                SimilarityElement se=getClosest(word);
+                ws=se.ws;
+                wordnetModifier=se.similarity;
+            }
+
+
             if(ws!=null) {
                 double[] partValues=ws.classStats;
                 for (int j = 0; j < values.length; j++) {
-                    values[j]+=(ws.IDFmodifier +ws.infoModifier)*partValues[j];
+                    values[j]+=(ws.IDFmodifier +3*ws.infoModifier+wordnetModifier)*partValues[j];
                 }
             }
-            else{
-                wordMissing=true;
-                //Wordnet
-            }
+
         }
 
         double max=0;
         int index=0;
+        double secondMax=0;
+        int secondMaxIndex=0;
         for (int i = 0; i <values.length; i++) {
             if(max<values[i]){
+                secondMax=max;
+                secondMaxIndex=index;
                 max=values[i];
                 index=i;
             }
         }
+
+
+
+
+        //If the second guess is better than 99.999% of the best, try a weighted random guess between the two
+/*        if(secondMax>=(max*0.99999)) {
+          //  System.out.println(secondMax+" "+max);
+            int maxInt=(int)(100*max);
+            int secondInt=(int)(100*secondMax);
+            int sum=maxInt+secondInt;
+           // System.out.println(secondInt+" "+maxInt);
+            if(sum>0) {
+                Random r = new Random();
+                int guess = r.nextInt(sum);
+                if (guess > maxInt) {
+                    index = secondMaxIndex;
+                }
+            }
+        }*/
 
         if(wordMissing){
             if(s.classVal==index) {
@@ -158,12 +207,58 @@ public class FrequncyCounter {
             }
             else{
                 missingMissed++;
-                MisVarience+=Math.abs(s.classVal-index);
+                missingMissVarience +=Math.abs(s.classVal-index);
+            }
+        }
+        else{
+            if(s.classVal==index) {
+                foundHit++;
+            }
+            else{
+                foundMissed++;
+                foundMissVarience +=Math.abs(s.classVal-index);
             }
         }
         return (s.classVal==index);
         //System.out.println(s.classVal+" -> "+index);
     }
+
+    private SimilarityElement getClosest(String word){
+        if(availableWords==null){
+            availableWords=new ArrayList<String>();
+            availableWords.addAll(wordStats.keySet());
+        }
+        double max=0;
+        String best="";
+        String[] type=new String[]{"#n","#v","#other"};
+        int j=0;
+
+        do {
+            for (int i = 0; i < availableWords.size(); i++) {
+                String compareTo = availableWords.get(i);
+                double value = rc.calcRelatednessOfWords(word + type[j], compareTo + type[j]);
+                if (max < value) {
+                    max = value;
+                    best = compareTo;
+                }
+            }
+            j++;
+        }while(max==0 && j<type.length);
+
+
+        return new SimilarityElement(wordStats.get(best),max);
+    }
+
+    public class SimilarityElement{
+        WordStat ws;
+        double similarity=0;
+
+        public SimilarityElement(WordStat ws, double similarity) {
+            this.ws = ws;
+            this.similarity = Math.min(similarity,1); //To handle Errones case of the same word getting more than 1 for similarity. This is not a problem here because logically, if the word was already there, we would not have to check the wordnet similarity anyway
+        }
+    }
+
 
     public String toString(){
         Iterator<WordStat> itr=wordStats.values().iterator();
@@ -188,7 +283,7 @@ public class FrequncyCounter {
         }
       //  modifiers=standadize(modifiers);
         modifiers = normalize(modifiers);
-      //  entModifiers=standadize(entModifiers);
+       // entModifiers=standadize(entModifiers);
         entModifiers=normalize(entModifiers);
         itr = wordStats.values().iterator();
         i = 0;
@@ -201,7 +296,9 @@ public class FrequncyCounter {
         }
     }
 
-    public double[] standadize(double[] stats){
+
+
+   /* public double[] standadize(double[] stats){
         double mean=0;
         for (int i = 0; i < stats.length; i++) {
             mean+=stats[i];
@@ -216,6 +313,30 @@ public class FrequncyCounter {
         double[] newStats=new double[stats.length];
         for (int i = 0; i < stats.length; i++) {
             newStats[i]=(stats[i]-mean)/stanDev;
+        }
+        return newStats;
+    }*/
+
+    public double[] standadize(double[] stats){
+        double mean=0;
+        for (int i = 0; i < stats.length; i++) {
+            mean+=stats[i];
+        }
+        mean=mean/stats.length;
+        double stanDev=0;
+        for (int i = 0; i <stats.length ; i++) {
+            stanDev+=Math.pow(stats[i]-mean,2);
+        }
+        stanDev=stanDev/stats.length;
+        stanDev=Math.sqrt(stanDev);
+        double b=2*Math.pow(stanDev,2);
+        double denom=stanDev*Math.sqrt(2*Math.PI);
+
+        double[] newStats=new double[stats.length];
+        for (int i = 0; i < stats.length; i++) {
+            double pow=(-Math.pow(stats[i]-mean,2))/b;
+            double numerator=Math.exp(pow);
+            newStats[i]=numerator/denom;
         }
         return newStats;
     }
@@ -296,7 +417,9 @@ public class FrequncyCounter {
                 String[] parts=line.split("\t");
                 //m=new Phrase(parts);
                 String[] processedParts=breakLineToParts(parts[2]);
-                sentences.add(new Sentence(parts[0], parts[1],processedParts, parts[3]));
+                if(processedParts.length>0) {
+                    sentences.add(new Sentence(parts[0], parts[1], parts[2], processedParts, parts[3]));
+                }
                 //unigrams.addAll(m.getUnigrams());
                 //bigrams.addAll(m.getBigrams());
                // phrases.add(m);
@@ -341,15 +464,17 @@ public class FrequncyCounter {
         int classVal;
         int phraseId=0;
         int sentenceId=0;
+        String sentence="";
 
-        public Sentence(String phraseIdS, String	sentenceIdS,String[] sentenceParts, String classVal) {
-            this( phraseIdS,sentenceIdS,sentenceParts,Integer.parseInt(classVal));
+        public Sentence(String phraseIdS, String	sentenceIdS,String sentenceS,String[] sentenceParts, String classVal) {
+            this( phraseIdS,sentenceIdS,sentenceS,sentenceParts,Integer.parseInt(classVal));
         }
-        public Sentence(String phraseIdS, String	sentenceIdS,String[] sentenceParts, int classVal) {
+        public Sentence(String phraseIdS, String	sentenceIdS,String sentenceS,String[] sentenceParts, int classVal) {
             this.sentenceParts = sentenceParts;
             this.classVal = classVal;
             phraseId=Integer.parseInt(phraseIdS);
             sentenceId=Integer.parseInt(sentenceIdS);
+            sentence=sentenceS;
         }
     }
 

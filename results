@@ -157,4 +157,38 @@ uni: 10 fold : no wordnet : With info (sum with idf)
 uni: 10 fold : no wordnet : With direct-info (sum with idf)
 38.80392156862745
 
-57% Misses result in misclassification with average 1 class difference
+Missing::  Miss: 77954 Hit: 58662 Miss Per%: 57 Miss Var: 1.3564922903250636
+Found::  Miss: 1851 Hit: 1987 Miss Per%: 48 Miss Var: 1.1988114532685035
+
+uni: 10 fold : add wordnet but no wordnet modifier: With direct-info (sum with idf)
+45.71767268999103
+
+Missing::  Miss: 67295 Hit: 69321 Miss Per%: 49 Miss Var: 1.2124526339252544
+Found::  Miss: 1851 Hit: 1987 Miss Per%: 48 Miss Var: 1.1988114532685035
+
+uni: 10 fold : add wordnet with wordnet modifier: With direct-info (sum with idf)
+45.7841855696527
+
+Missing::  Miss: 67189 Hit: 69427 Miss Per%: 49 Miss Var: 1.2097664796320826
+Found::  Miss: 1851 Hit: 1987 Miss Per%: 48 Miss Var: 1.1988114532685035
+
+uni: 10 fold : add wordnet with wordnet modifier: With direct-info x 3 weight (sum with idf)
+45.78719723183391
+
+Missing::  Miss: 67148 Hit: 69468 Miss Per%: 49 Miss Var: 1.2126496693870257
+Found::  Miss: 1851 Hit: 1987 Miss Per%: 48 Miss Var: 1.1988114532685035
+
+uni: 10 fold : add wordnet with wordnet modifier: With direct-info x 3 weight (sum with idf) : Remove bi-addition 
+45.895809304113804
+
+Missing::  Miss: 51103 Hit: 49892 Miss Per%: 50 Miss Var: 1.2133925601236717
+Found::  Miss: 17746 Hit: 21713 Miss Per%: 44 Miss Var: 1.1884368308351179
+
+uni: 10 fold : add wordnet with wordnet modifier: With direct-info x 3 weight (sum with idf) : 99.9% similarity
+45.9004857791051
+
+uni: 10 fold : add wordnet with wordnet modifier: With direct-info x 3 weight (sum with idf) : 99.99% similarity
+45.90119073559005
+
+uni: 10 fold : add wordnet with wordnet modifier: With direct-info x 3 weight (sum with idf) : 99.999% similarity
+45.90125482254323
