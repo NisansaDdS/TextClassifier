@@ -137,7 +137,7 @@ VFI: 33.1255
 Rand For,NB,LR,: 27.2
 Lazy IBK 40.1482%
 
-
+........................................................................................................................
 NEW
 uni: 10 fold : no wordnet
 38.043701140586954
@@ -192,3 +192,8 @@ uni: 10 fold : add wordnet with wordnet modifier: With direct-info x 3 weight (s
 
 uni: 10 fold : add wordnet with wordnet modifier: With direct-info x 3 weight (sum with idf) : 99.999% similarity
 45.90125482254323
+
+uni: 10 fold : add wordnet with wordnet modifier (with V and Other too): With direct-info x 3 weight (sum with idf) : no random
+45.901447083402765
+
+
