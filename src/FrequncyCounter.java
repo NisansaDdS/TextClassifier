@@ -57,7 +57,7 @@ public class FrequncyCounter {
     public void runIteration(){
         train();
         normalize();
-        System.out.println(evaluate());
+        System.out.println(evaluate(test));
     }
 
     public void train(){
@@ -68,7 +68,8 @@ public class FrequncyCounter {
     }
 
     public void nFoldCrossValidation(int n){
-        double accuracy=0;
+        double trainAccuracy=0;
+        double testAccuracy=0;
         for (int i = 0; i <n ; i++) {
             wordStats=new HashMap<String,WordStat>();
             train=new  ArrayList<Sentence>();
@@ -89,9 +90,11 @@ public class FrequncyCounter {
             }
             train();
             normalize();
-            accuracy+=evaluate();
+            trainAccuracy+=evaluate(train);
+            testAccuracy+=evaluate(test);
         }
-        System.out.println(accuracy/n);
+        System.out.println("Train Accuracy: "+trainAccuracy/n);
+        System.out.println("Test Accuracy: "+testAccuracy/n);
     }
 
     public void randomPartition(double trainFraction){
@@ -107,7 +110,7 @@ public class FrequncyCounter {
         test.addAll(tempSentences);
     }
 
-    public double evaluate(){
+    public double evaluate(ArrayList<Sentence> evalSentences){
         missingMissed=0;
         missingHit=0;
         missingMissVarience =0;
@@ -115,16 +118,36 @@ public class FrequncyCounter {
         foundHit=0;
         foundMissVarience =0;
 
+
+
         int count=0;
-        for (int i = 0; i < test.size(); i++) {
-            if(evaluate(test.get(i))){
+        for (int i = 0; i < evalSentences.size(); i++) {
+            if(evaluate(evalSentences.get(i))){
                 count++;
             }
         }
-        System.out.println("Missing::  Miss: "+missingMissed+" Hit: "+missingHit+" Miss Per%: "+(missingMissed*100)/(missingMissed+missingHit)+" Miss Var: "+ missingMissVarience /missingMissed);
-        System.out.println("Found::  Miss: "+foundMissed+" Hit: "+foundHit+" Miss Per%: "+(foundMissed*100)/(foundMissed+foundHit)+" Miss Var: "+ foundMissVarience /foundMissed);
+        double misVar=0;
+        double foundVar=0;
+        double missingSum=missingMissed+missingHit;
+        double foundSum=foundMissed+foundHit;
+        double missPer=0;
+        double foundPer=0;
+        if(missingMissed>0){
+            misVar= missingMissVarience /missingMissed;
+        }
+        if(foundMissed>0){
+            foundVar= foundMissVarience /foundMissed;
+        }
+        if(missingSum>0){
+            missPer=(missingMissed*100)/(missingMissed+missingHit);
+        }
+        if(foundSum>0){
+            foundPer=(foundMissed*100)/(foundMissed+foundHit);
+        }
+        System.out.println("Missing::  Miss: "+missingMissed+" Hit: "+missingHit+" Miss Per%: "+missPer+" Miss Var: "+ misVar);
+        System.out.println("Found::  Miss: "+foundMissed+" Hit: "+foundHit+" Miss Per%: "+foundPer+" Miss Var: "+ foundVar);
 
-        return(((double)(count*100))/sentences.size());
+        return(((double)(count*100))/evalSentences.size());
     }
 
     int missingMissed=0;
