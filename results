@@ -160,6 +160,8 @@ uni: 10 fold : no wordnet : With direct-info (sum with idf)
 Missing::  Miss: 77954 Hit: 58662 Miss Per%: 57 Miss Var: 1.3564922903250636
 Found::  Miss: 1851 Hit: 1987 Miss Per%: 48 Miss Var: 1.1988114532685035
 
+Pres: 60649/ 140454= 43.18%
+
 uni: 10 fold : add wordnet but no wordnet modifier: With direct-info (sum with idf)
 45.71767268999103
 
@@ -183,6 +185,8 @@ uni: 10 fold : add wordnet with wordnet modifier: With direct-info x 3 weight (s
 
 Missing::  Miss: 51103 Hit: 49892 Miss Per%: 50 Miss Var: 1.2133925601236717
 Found::  Miss: 17746 Hit: 21713 Miss Per%: 44 Miss Var: 1.1884368308351179
+
+Pres=71605/140454=50.98
 
 uni: 10 fold : add wordnet with wordnet modifier: With direct-info x 3 weight (sum with idf) : 99.9% similarity
 45.9004857791051

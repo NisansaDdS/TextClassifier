@@ -79,14 +79,14 @@ public class FrequncyCounter {
             tempSentences.addAll(sentences);
             int limit=(int)(sentences.size()/n);
             for (int j = 0; j < i*limit; j++) {
-                test.add(tempSentences.get(j));
+                train.add(tempSentences.get(j));
             }
             int cut=((i*limit)+limit);
             for (int j = i*limit; j <cut ; j++) {
-                train.add(tempSentences.get(j));
+                test.add(tempSentences.get(j));
             }
             for (int j = cut; j <tempSentences.size() ; j++) {
-                test.add(tempSentences.get(j));
+                train.add(tempSentences.get(j));
             }
             train();
             normalize();
