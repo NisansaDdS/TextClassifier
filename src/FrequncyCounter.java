@@ -36,7 +36,8 @@ public class FrequncyCounter {
     ILexicalDatabase db = new NictWordNet();
     private RelatednessCalculator rc= new WuPalmer(db);
     ArrayList<String> availableWords=new  ArrayList<String>();
-
+    static double saturationAmount=0.935;
+    static double idfW=1;
 
     public static void main(String[] args) {
 
@@ -46,7 +47,15 @@ public class FrequncyCounter {
         fc.readDataFile(path + "train.tsv", false);
         //fc.randomPartition(0.1);
         //fc.runIteration();
-        fc.nFoldCrossValidation(10);
+
+
+       // for (; saturationAmount < 0.941; saturationAmount=saturationAmount+0.001) {
+           // fc.nFoldCrossValidation(10);
+       // }
+       // for (idfW = 1; idfW <2.1 ; idfW=idfW+0.1) {
+            fc.nFoldCrossValidation(10);
+        //}
+
         //System.out.println(fc);
 
 
@@ -93,6 +102,8 @@ public class FrequncyCounter {
             trainAccuracy+=evaluate(train);
             testAccuracy+=evaluate(test);
         }
+        //System.out.println(saturationAmount);
+        System.out.println(idfW);
         System.out.println("Train Accuracy: "+trainAccuracy/n);
         System.out.println("Test Accuracy: "+testAccuracy/n);
     }
@@ -144,8 +155,8 @@ public class FrequncyCounter {
         if(foundSum>0){
             foundPer=(foundMissed*100)/(foundMissed+foundHit);
         }
-        System.out.println("Missing::  Miss: "+missingMissed+" Hit: "+missingHit+" Miss Per%: "+missPer+" Miss Var: "+ misVar);
-        System.out.println("Found::  Miss: "+foundMissed+" Hit: "+foundHit+" Miss Per%: "+foundPer+" Miss Var: "+ foundVar);
+       // System.out.println("Missing::  Miss: "+missingMissed+" Hit: "+missingHit+" Miss Per%: "+missPer+" Miss Var: "+ misVar);
+       // System.out.println("Found::  Miss: "+foundMissed+" Hit: "+foundHit+" Miss Per%: "+foundPer+" Miss Var: "+ foundVar);
 
         return(((double)(count*100))/evalSentences.size());
     }
@@ -178,18 +189,25 @@ public class FrequncyCounter {
                 wordMissing=true;
                 //Wordnet
                 SimilarityElement se=getClosest(word);
-                ws=se.ws;
-                wordnetModifier=se.similarity;
+
+                    ws = se.ws;
+                    wordnetModifier =Math.max(saturationAmount, se.similarity);  //0.9
+
+               // ws=null; //Turn off wordnet matching
             }
 
-            double idfW=45;
-            double inforW=3.75;
-            double wnW=1;
+
+
+
+           // wordnetModifier=1;  //Turn off wordnet scalling
+           // idfW=1; //Turn off weight
 
             if(ws!=null) {
+                //ws.infoModifier=0; //Turn off info
+
                 double[] partValues=ws.classStats;
                 for (int j = 0; j < values.length; j++) {
-                    values[j]+=(idfW*ws.IDFmodifier +((inforW*ws.infoModifier+wnW*wordnetModifier)/(inforW+wnW)))*partValues[j];
+                    values[j]+=wordnetModifier*(idfW*ws.IDFmodifier +ws.infoModifier)*partValues[j];
                 }
             }
 
@@ -302,7 +320,8 @@ public class FrequncyCounter {
         int i = 0;
         while (itr.hasNext()) {
             WordStat ws = itr.next();
-            ws.setClassStats(normalize(ws.getClassStats()));
+            ws.setClassStats(sumNormalize(ws.getClassStats()));
+           // System.out.println(ws.toString());
             modifiers[i] = logb(sentences.size() / (1 + ws.sentenceCount), 10);
             entModifiers[i]=1-calculateEntropy(ws.getClassStats());//((ws.getNonZeroCount()* calculateEntropy(ws.getClassStats()))/ws.getClassStats().length);//calculateEntropy(ws.getClassStats());
             i++;
@@ -363,6 +382,18 @@ public class FrequncyCounter {
             double pow=(-Math.pow(stats[i]-mean,2))/b;
             double numerator=Math.exp(pow);
             newStats[i]=numerator/denom;
+        }
+        return newStats;
+    }
+
+    public double[] sumNormalize(double[] stats){
+        double sum=0;
+        for (int i = 0; i < stats.length; i++) {
+            sum+=stats[i];
+        }
+        double[] newStats=new double[stats.length];
+        for (int i = 0; i < newStats.length; i++) {
+            newStats[i]=(stats[i]/sum);
         }
         return newStats;
     }
