@@ -182,11 +182,14 @@ public class FrequncyCounter {
                 wordnetModifier=se.similarity;
             }
 
+            double idfW=45;
+            double inforW=3.75;
+            double wnW=1;
 
             if(ws!=null) {
                 double[] partValues=ws.classStats;
                 for (int j = 0; j < values.length; j++) {
-                    values[j]+=(ws.IDFmodifier +3*ws.infoModifier+wordnetModifier)*partValues[j];
+                    values[j]+=(idfW*ws.IDFmodifier +((inforW*ws.infoModifier+wnW*wordnetModifier)/(inforW+wnW)))*partValues[j];
                 }
             }
 
@@ -301,7 +304,7 @@ public class FrequncyCounter {
             WordStat ws = itr.next();
             ws.setClassStats(normalize(ws.getClassStats()));
             modifiers[i] = logb(sentences.size() / (1 + ws.sentenceCount), 10);
-            entModifiers[i]=calculateEntropy(ws.getClassStats());//(ws.getNonZeroCount()* calculateEntropy(ws.getClassStats()))/ws.getClassStats().length;//calculateEntropy(ws.getClassStats());
+            entModifiers[i]=1-calculateEntropy(ws.getClassStats());//((ws.getNonZeroCount()* calculateEntropy(ws.getClassStats()))/ws.getClassStats().length);//calculateEntropy(ws.getClassStats());
             i++;
         }
       //  modifiers=standadize(modifiers);
