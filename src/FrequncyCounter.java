@@ -15,8 +15,7 @@ import net.didion.jwnl.data.list.PointerTargetTreeNodeList;
 import net.didion.jwnl.dictionary.Dictionary;
 import net.didion.jwnl.dictionary.MorphologicalProcessor;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,9 +28,12 @@ public class FrequncyCounter {
 
     HashMap<String,WordStat> wordStats=new HashMap<String,WordStat>();
     ArrayList<Sentence> sentences=new  ArrayList<Sentence>();
+    ArrayList<Sentence> testSentences=new  ArrayList<Sentence>();
     ArrayList<Sentence> train=new  ArrayList<Sentence>();
     ArrayList<Sentence> test=new  ArrayList<Sentence>();
+    ArrayList<Integer[]> assignments=new  ArrayList<Integer[]>();
     Stemmer stemmer=null;
+    int[] allStats=new int[5];
 
     ILexicalDatabase db = new NictWordNet();
     private RelatednessCalculator rc= new WuPalmer(db);
@@ -39,12 +41,15 @@ public class FrequncyCounter {
     static double saturationAmount=0.935;
     static double idfW=1;
 
+    boolean realTest=false;
+
     public static void main(String[] args) {
 
 
         FrequncyCounter fc = new FrequncyCounter();
         String path = "./";
         fc.readDataFile(path + "train.tsv", false);
+        fc.readTestDataFile(path + "test.tsv", false);
         //fc.randomPartition(0.1);
         //fc.runIteration();
 
@@ -53,7 +58,9 @@ public class FrequncyCounter {
            // fc.nFoldCrossValidation(10);
        // }
        // for (idfW = 1; idfW <2.1 ; idfW=idfW+0.1) {
-            fc.nFoldCrossValidation(10);
+                  // fc.nFoldCrossValidation(10);
+                  fc.Calssify();
+                fc.writeClassifications(path + "fin.csv");
         //}
 
         //System.out.println(fc);
@@ -61,6 +68,8 @@ public class FrequncyCounter {
 
         //c.writeFile(path);
     }
+
+
 
 
     public void runIteration(){
@@ -73,6 +82,49 @@ public class FrequncyCounter {
         for (int i = 0; i < train.size(); i++) {
             Sentence s=train.get(i);
             ProcessLine(s.phraseId, s.sentenceId, s.sentenceParts,s.classVal);
+        }
+    }
+
+
+    public void Calssify(){
+        wordStats=new HashMap<String,WordStat>();
+        for (int i = 0; i < sentences.size(); i++) {
+            train.add(sentences.get(i));
+        }
+        for (int i = 0; i < testSentences.size(); i++) {
+            test.add(testSentences.get(i));
+        }
+
+        double trainAccuracy=0;
+        double testAccuracy=0;
+        train();
+        normalize();
+        trainAccuracy+=evaluate(train);
+        testAccuracy+=evaluate(test);
+
+
+        //System.out.println(saturationAmount);
+        //System.out.println(idfW);
+        System.out.println("Train Accuracy: "+trainAccuracy);
+       // System.out.println("Test Accuracy: "+testAccuracy); //Does not have a real meaning.
+    }
+
+
+   public void writeClassifications(String fullFilePath){
+        try {
+            File statText = new File(fullFilePath);
+            FileWriter fw=new FileWriter(statText,true);
+            // FileOutputStream is = new FileOutputStream(statText);
+            // OutputStreamWriter osw = new OutputStreamWriter(is);
+            BufferedWriter w = new BufferedWriter(fw);
+            w.write("PhraseId,Sentiment\n");
+            for (int i = 0; i <assignments.size() ; i++) {
+                Integer[] res=assignments.get(i);
+                w.write(res[0]+","+res[1]+"\n");
+            }
+            w.close();
+        } catch (IOException e) {
+            System.err.println("Problem writing lines to the file "+fullFilePath);
         }
     }
 
@@ -128,7 +180,7 @@ public class FrequncyCounter {
         foundMissed=0;
         foundHit=0;
         foundMissVarience =0;
-
+        assignments=new  ArrayList<Integer[]>();
 
 
         int count=0;
@@ -214,7 +266,7 @@ public class FrequncyCounter {
         }
 
         double max=0;
-        int index=0;
+        int index=2;
         double secondMax=0;
         int secondMaxIndex=0;
         for (int i = 0; i <values.length; i++) {
@@ -230,7 +282,7 @@ public class FrequncyCounter {
 
 
         //If the second guess is better than 99.999% of the best, try a weighted random guess between the two
-/*        if(secondMax>=(max*0.99999)) {
+       /* if(secondMax>=(max*0.99999)) {
           //  System.out.println(secondMax+" "+max);
             int maxInt=(int)(100*max);
             int secondInt=(int)(100*secondMax);
@@ -244,6 +296,11 @@ public class FrequncyCounter {
                 }
             }
         }*/
+        if(realTest && allStats[secondMaxIndex]>allStats[index] && secondMax>=(max*0.99)){
+            index=secondMaxIndex;
+        }
+
+        assignments.add(new Integer[]{s.phraseId,index});
 
         if(wordMissing){
             if(s.classVal==index) {
@@ -475,7 +532,9 @@ public class FrequncyCounter {
                 //m=new Phrase(parts);
                 String[] processedParts=breakLineToParts(parts[2]);
                 if(processedParts.length>0) {
-                    sentences.add(new Sentence(parts[0], parts[1], parts[2], processedParts, parts[3]));
+                    Sentence s=new Sentence(parts[0], parts[1], parts[2], processedParts, parts[3]);
+                    sentences.add(s);
+                    allStats[s.classVal]++;
                 }
                 //unigrams.addAll(m.getUnigrams());
                 //bigrams.addAll(m.getBigrams());
@@ -514,7 +573,63 @@ public class FrequncyCounter {
 
     }
 
+    public void readTestDataFile(String path, Boolean isSpam) {
+        realTest=true;
+        String line=null;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            line = br.readLine();
+            line = br.readLine(); //Ignoring the first line
+            int messagePartIndex = 0;
+            StringBuilder sb = new StringBuilder();
+            //Phrase m = null;
+            while (line != null) {
+                //  System.out.println(line);
+                String[] parts=line.split("\t");
+                //m=new Phrase(parts);
+                String[] processedParts=breakLineToParts(parts[2]);
+                if(processedParts.length>0) {
+                    testSentences.add(new Sentence(parts[0], parts[1], parts[2], processedParts,"2"));
+                }
+                else{
+                    testSentences.add(new Sentence(parts[0], parts[1], parts[2], new  String[]{},"2"));
+                }
+                //unigrams.addAll(m.getUnigrams());
+                //bigrams.addAll(m.getBigrams());
+                // phrases.add(m);
+             /*   if (messagePartIndex == 0) { // Sender email
+                    m = new Phrase(line, isSpam);
+                    hosts.add(m.getHost());
+                    messagePartIndex++;
+                } else if (messagePartIndex == 1) {
+                    messagePartIndex++; // Ignore the timeStamp
+                } else if (messagePartIndex == 2) { // Subject
+                    m.setSubject(line);
+                    messagePartIndex++;
+                } else {
+                    if (!line.contains("&&&&&&&")) {
+                        sb.append(line);
+                        sb.append(" ");
+                    } else {
+                        m.setMessage(sb.toString());
+                        unigrams.addAll(m.getUnigrams());
+                        bigrams.addAll(m.getBigrams());
+                        phrases.add(m);
+                        System.out.println(m.toString());
+                        messagePartIndex = 0; // reset message part counter
+                        sb = new StringBuilder(); // Prepare string builder for next message
+                    }
+                }*/
+                line = br.readLine();
+            }
+            br.close();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
 
+
+
+    }
 
     public class Sentence{
         String[] sentenceParts;
